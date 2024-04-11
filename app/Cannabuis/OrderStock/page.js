@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import NewItem from "./NewItem";
-import ItemList from "./ItemList";
+import NewItem from "../Components/NewItem";
+import ItemList from "../Components/ItemList";
 import { useUserAuth } from "../_utils/auth-context";
 import { addItem, getItems } from "../_services/CannabuisServices";
 
