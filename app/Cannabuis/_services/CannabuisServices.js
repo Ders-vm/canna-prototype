@@ -2,6 +2,17 @@
 
 import { db } from "../_utils/firebase";
 import { collection, getDocs, addDoc } from "firebase/firestore";
+import axios from 'axios';
+
+export async function updateItemQuantity(itemId, quantity) {
+  try {
+    const response = await axios.put(`/api/items/${itemId}`, { quantity });
+    return response.data;
+  } catch (error) {
+    throw new Error('Error updating item quantity:', error);
+  }
+}
+
 
 // Function to retrieve items for a specific user
 export async function getItems(userId) {
