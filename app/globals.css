@@ -4,7 +4,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --border-color: 0, 0, 0; /* Black border color */
+  --border-color: 255, 255, 255; /* White border color */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,7 +29,7 @@ body {
   text-wrap: balance;
 }
 
-/* Apply white text and black borders to all elements */
+/* Apply white text and white borders to all elements */
 * {
   color: white !important;
   border-color: rgb(var(--border-color)) !important;
@@ -38,4 +38,8 @@ body {
 /* Apply black text to input elements */
 input {
   color: black !important;
+}
+
+.item-box {
+  border: 2px solid white; /* White border */
 }

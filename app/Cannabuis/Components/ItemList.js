@@ -2,7 +2,7 @@ export default function ItemList({ items }) {
     return (
         <div>
             {items.map((item) => (
-                <div key={item.id} className="item-box" style={{ border: '2px solid teal' }}>
+                <div key={item.id} className="item-box">
                     <h1> CNB: {item?.data?.CNB}</h1>
                     <p>Item Name: {item?.data?.itemName}</p>
                     <p>Description: {item?.data?.description}</p>
