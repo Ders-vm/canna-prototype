@@ -33,6 +33,10 @@ export default function Page() {
         const itemId = await addItem(user.uid, item);
         const newItem = { id: itemId, ...item };
         setItems((prevItems) => [...prevItems, newItem]);
+
+        // Refetch items after adding a new item
+        const updatedItems = await getItems(user.uid);
+        setItems(updatedItems);
       } else {
         console.error("User object or user.uid is undefined");
       }
