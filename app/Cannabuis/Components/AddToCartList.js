@@ -10,6 +10,7 @@ export default function AddToCartList({ items, onAddToCart }) {
           <p>Item Name: {item?.data?.itemName}</p>
           <p>Description: {item?.data?.description}</p>
           <p>Price: ${item?.data?.price}</p>
+          <p>Quantity: {item?.data?.quantity}</p>
           <button onClick={() => onAddToCart(item)}>Add to Cart</button>
         </div>
       ))}

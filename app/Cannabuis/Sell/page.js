@@ -11,49 +11,66 @@ export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        if (user) {
-          const fetchedItems = await getItems(user.uid);
-          setItems(fetchedItems);
-        }
-      } catch (error) {
-        console.error("Error fetching items:", error);
+  const fetchItems = async () => {
+    try {
+      if (user) {
+        const fetchedItems = await getItems(user.uid);
+        setItems(fetchedItems);
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+  
+  useEffect(() => {
     fetchItems();
   }, [user]);
 
   const handleAddToCart = (item) => {
-    const existingItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
-
+    const existingItemIndex = cartItems.findIndex(cartItem => cartItem.id === item.id);
     if (existingItemIndex !== -1) {
       const updatedCartItems = [...cartItems];
       updatedCartItems[existingItemIndex].quantity += 1;
       setCartItems(updatedCartItems);
     } else {
-      setCartItems((prevItems) => [...prevItems, { ...item, quantity: 1 }]);
+      // Initialize both quantity and sellQuantity to 1 when item is first added to cart
+      setCartItems(prevItems => [...prevItems, { ...item, quantity: 1, sellQuantity: 1 }]);
     }
   };
-
+  const handleQuantityChange = (itemId, newQuantity) => {
+    setCartItems(currentItems => currentItems.map(cartItem => {
+      if (cartItem.id === itemId) {
+        return { ...cartItem, sellQuantity: newQuantity };
+      }
+      return cartItem;
+    }));
+  };
+  
   const handleSellItem = async (itemId) => {
-    // Find the item to sell
-    const itemToSell = cartItems.find((item) => item.id === itemId);
-    if (!itemToSell) return;
-
-    // Update quantity in the database
-    try {
-      await updateItemQuantity(itemId, 0); // Set quantity to 0 in the database
-      console.log('Item quantity updated in the database.');
-    } catch (error) {
-      console.error('Error updating item quantity in the database:', error);
+    const item = cartItems.find(item => item.id === itemId);
+    if (item && item.sellQuantity > 0) {
+      try {
+        await updateItemQuantity(user.uid, itemId, item.sellQuantity);
+        console.log('Item quantity updated in the database.');
+  
+        // Update cart state to reflect new quantity or remove the item if quantity becomes zero
+        setCartItems(currentItems =>
+          currentItems.map(cartItem =>
+            cartItem.id === itemId
+              ? { ...cartItem, quantity: cartItem.quantity - item.sellQuantity }
+              : cartItem
+          ).filter(cartItem => cartItem.quantity > 0)
+        );
+  
+        // Re-fetch items to update the list shown in AddToCartList
+        fetchItems();  // Assuming fetchItems is refactored to be accessible here
+  
+      } catch (error) {
+        console.error('Error updating item quantity in the database:', error);
+      }
+    } else {
+      console.error("Invalid operation: sellQuantity is zero or not defined.");
     }
-
-    // Remove the item from the cart
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId);
-    setCartItems(updatedCartItems);
   };
 
   return (
@@ -66,7 +83,8 @@ export default function CartPage() {
               <AddToCartList items={items} onAddToCart={handleAddToCart} />
             </div>
             <div className="flex-1">
-              <CartItemList items={cartItems} onSellItem={handleSellItem} />
+            <CartItemList items={cartItems} onSellItem={handleSellItem} onQuantityChange={handleQuantityChange} />
+
             </div>
           </div>
         </div>

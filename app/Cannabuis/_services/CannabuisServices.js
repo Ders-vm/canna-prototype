@@ -1,17 +1,36 @@
 // File: _services/CannabuisServices.js
 
 import { db } from "../_utils/firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import axios from 'axios';
 
-export async function updateItemQuantity(itemId, quantity) {
+// Function to update the item quantity by a specific amount
+export const updateItemQuantity = async (userId, itemId, decrement) => {
+  const itemRef = doc(db, 'users', userId, 'items', itemId);
+
   try {
-    const response = await axios.put(`/api/items/${itemId}`, { quantity });
-    return response.data;
+    // Get the current document snapshot
+    const itemSnapshot = await getDoc(itemRef);
+    if (itemSnapshot.exists()) {
+      // Get current quantity
+      const currentQuantity = itemSnapshot.data().quantity;
+      if (currentQuantity >= decrement) {
+        // Update quantity in the database by reducing it by the decrement amount
+        await updateDoc(itemRef, {
+          quantity: currentQuantity - decrement
+        });
+        console.log(`Successfully decreased the quantity of item ${itemId} by ${decrement}. New quantity: ${currentQuantity - decrement}`);
+      } else {
+        console.error(`Attempted to reduce more items than are available. Available: ${currentQuantity}, Tried to reduce: ${decrement}`);
+      }
+    } else {
+      console.error('Item does not exist.');
+    }
   } catch (error) {
-    throw new Error('Error updating item quantity:', error);
+    console.error('Error updating item quantity:', error);
   }
-}
+};
+
 
 
 // Function to retrieve items for a specific user
