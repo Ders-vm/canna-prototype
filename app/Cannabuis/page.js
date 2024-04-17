@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { useUserAuth } from "./_utils/auth-context";
+import NavBar from "./Components/navBar";
 
 function Page() {
   const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
@@ -24,16 +25,19 @@ function Page() {
 
   if (user) {
     return (
-      <div>
-        <h1>Welcome {user.displayName}</h1>
-        <Link href="/Cannabuis/OrderStock">
-          Order Stock
-        </Link>
-        <Link href="/Cannabuis/Sell">
-          Sell
-        </Link>
-        <button onClick={handleSignOut}>Sign Out</button>
-      </div>
+      <main>
+        <NavBar/>
+        <div>
+          <h1>Welcome {user.displayName}</h1>
+          <Link href="/Cannabuis/OrderStock">
+            Order Stock
+          </Link>
+          <Link href="/Cannabuis/Sell">
+            Sell
+          </Link>
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+      </main>
     );
   }
 

@@ -4,6 +4,7 @@ import NewItem from "../Components/NewItem";
 import ItemList from "../Components/ItemList";
 import { useUserAuth } from "../_utils/auth-context";
 import { addItem, getItems } from "../_services/CannabuisServices";
+import NavBar from "../Components/navBar";
 
 export default function Page() {
   const { user } = useUserAuth(); // Access the user object from the authentication context
@@ -50,20 +51,23 @@ export default function Page() {
   };
 
   return (
-    <div>
-      <header></header>
-      <main className="flex flex-col md:flex-row">
-        <div className="flex-1 md:mr-4">
-          <div className="flex">
-            <div className="flex-1">
-              <ItemList items={items} onItemClick={handleItemClick} />
-            </div>
-            <div className="flex-1">
-              <NewItem onAddItem={handleAddItem} />
+    <main>
+      <NavBar/>
+      <div>
+        <header></header>
+        <main className="flex flex-col md:flex-row">
+          <div className="flex-1 md:mr-4">
+            <div className="flex">
+              <div className="flex-1">
+                <ItemList items={items} onItemClick={handleItemClick} />
+              </div>
+              <div className="flex-1">
+                <NewItem onAddItem={handleAddItem} />
+              </div>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </main>
   );
 }
