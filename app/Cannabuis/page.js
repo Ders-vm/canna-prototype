@@ -28,13 +28,7 @@ function Page() {
       <main>
         <NavBar/>
         <div>
-          <h1>Welcome {user.displayName}</h1>
-          <Link href="/Cannabuis/OrderStock">
-            Order Stock
-          </Link>
-          <Link href="/Cannabuis/Sell">
-            Sell
-          </Link>
+          <h1>Welcome {user.displayName}</h1>          
           <button onClick={handleSignOut}>Sign Out</button>
         </div>
       </main>

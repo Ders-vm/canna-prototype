@@ -5,6 +5,7 @@ import { useUserAuth } from "../_utils/auth-context";
 import { getItems, updateItemQuantity } from "../_services/CannabuisServices";
 import CartItemList from "../Components/CartItemList";
 import AddToCartList from "../Components/AddToCartList";
+import NavBar from "../Components/navBar";
 
 export default function CartPage() {
   const { user } = useUserAuth();
@@ -77,6 +78,7 @@ export default function CartPage() {
     <div>
       <header></header>
       <main className="flex flex-col md:flex-row">
+        <NavBar/>
         <div className="flex-1 md:mr-4">
           <div className="flex">
             <div className="flex-1">

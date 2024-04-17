@@ -2,18 +2,18 @@ import Link from "next/link";
 
 const Sell = () => {
 return (
-    <Link className="flex p-1 m-1" href="/Sell">Sell</Link>
+    <Link className="flex p-1 m-1" href="/Cannabuis/Sell">Sell</Link>
 );
 };
 const OrderStock = () => {
 return (
-    <Link className="flex p-1 m-1" href="/OrderStock">Order Stock</Link>
+    <Link className="flex p-1 m-1" href="/Cannabuis/OrderStock">Order Stock</Link>
 );
 };
 
 const Home = () => {
 return (
-    <Link className="flex p-1 m-1" href="/">Home</Link>
+    <Link className="flex p-1 m-1" href="/Cannabuis">Home</Link>
 );
 };
 
